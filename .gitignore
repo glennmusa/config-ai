@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Symlink targets (created by setup.ps1, not tracked)
+.github/copilot-instructions.md
+CLAUDE.md
+.cursorrules
