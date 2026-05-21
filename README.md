@@ -44,12 +44,19 @@ each tool expects its config. Edit once, every tool picks it up.
 git clone https://github.com/youruser/config-ai ~/.config/ai
 cd ~/.config/ai
 
-# Edit the knowledge files to match you
-code knowledge/me.md knowledge/voice.md knowledge/preferences.md
-
 # Create the symlinks (requires Administrator)
 .\setup.ps1
 ```
+
+Then paste this into any AI tool with file access:
+
+```
+Set up my ~/.config/ai/ knowledge base. Follow the skill in skills/onboarding.md.
+```
+
+The tool will walk you through filling out each knowledge file
+step by step — who you are, how you write, how you work, your team,
+and your MCP servers. Takes about five minutes.
 
 ## How mcp.json works
 
