@@ -21,11 +21,11 @@ function Link-Config {
 
 # --- MCP server config ---
 Link-Config "$env:APPDATA\Code\User\mcp.json"                   "$configDir\mcp.json"          "VS Code"
-# Link-Config "$env:APPDATA\Claude\claude_desktop_config.json"   "$configDir\mcp.json"          "Claude Desktop"
+Link-Config "$env:APPDATA\Claude\claude_desktop_config.json"     "$configDir\mcp.json"          "Claude Desktop"
 
 # --- Instruction files (global) ---
 Link-Config "$HOME\.claude\CLAUDE.md"                            "$configDir\instructions.md"   "Claude Code"
-# Link-Config "$HOME\.cursor\rules\config-ai.md"                 "$configDir\instructions.md"   "Cursor"
+Link-Config "$HOME\.cursor\rules\config-ai.md"                   "$configDir\instructions.md"   "Cursor"
 
 Write-Host ""
 Write-Host "Done. Symlinks created." -ForegroundColor Cyan

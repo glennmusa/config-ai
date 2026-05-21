@@ -24,11 +24,11 @@ link() {
 
 # --- MCP server config ---
 link "$HOME/.config/Code/User/mcp.json"                  "$CONFIG_DIR/mcp.json"          "VS Code"
-# link "$HOME/.config/Claude/claude_desktop_config.json"  "$CONFIG_DIR/mcp.json"          "Claude Desktop"
+link "$HOME/.config/Claude/claude_desktop_config.json"    "$CONFIG_DIR/mcp.json"          "Claude Desktop"
 
 # --- Instruction files (global) ---
 link "$HOME/.claude/CLAUDE.md"                            "$CONFIG_DIR/instructions.md"   "Claude Code"
-# link "$HOME/.cursor/rules/config-ai.md"                 "$CONFIG_DIR/instructions.md"   "Cursor"
+link "$HOME/.cursor/rules/config-ai.md"                   "$CONFIG_DIR/instructions.md"   "Cursor"
 
 echo ""
 echo "Done. Symlinks created."
