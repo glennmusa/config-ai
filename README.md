@@ -18,7 +18,7 @@ each tool expects its config. Edit once, every tool picks it up.
 ## Quick start
 
 ```powershell
-git clone https://github.com/youruser/config-ai ~/.config/ai
+git clone https://github.com/glennmusa/config-ai ~/.config/ai
 cd ~/.config/ai
 
 # Create the symlinks (requires Administrator)
@@ -58,12 +58,12 @@ and your MCP servers. Takes about five minutes.
                                        │
               ┌────────────────────────┼────────────────────────┐
               │                        │                        │
-     ┌────────▼─────────┐    ┌────────▼─────────┐    ┌────────▼─────────┐
+     ┌────────▼──────────┐    ┌────────▼──────────┐    ┌────────▼─────────┐
      │    VS Code        │    │  Claude Desktop   │    │     Cursor       │
      │                   │    │                   │    │                  │
      │  mcp.json ←───────│────│── mcp.json ←──────│────│── (manual)       │
      │  copilot-         │    │  claude_desktop_  │    │  .cursorrules ←──│
-     │  instructions.md ←│    │  config.json ←    │    │                  │
+     │  instructions.md ←│    │  config.json ←────│    │                  │
      └───────────────────┘    └───────────────────┘    └──────────────────┘
 ```
 
