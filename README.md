@@ -103,6 +103,7 @@ See `prompts/bootstrap.md` for the full version.
 | **Knowledge** | Facts about you that don't change often | `me.md`, `voice.md` |
 | **Skill** | A multi-step procedure an agent can follow | `skills/onboarding.md` |
 | **Prompt** | A one-liner that kicks off a workflow | `prompts/bootstrap.md` |
+| **Agent** | A skill with enough context to run autonomously | `agents/onboarding.md` |
 
 A prompt is a sentence. A skill is a prompt that grew up.
 
