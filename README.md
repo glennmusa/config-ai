@@ -15,29 +15,6 @@ parallel instruction files that inevitably drift.
 Put everything in `~/.config/ai/` and symlink it to where
 each tool expects its config. Edit once, every tool picks it up.
 
-## Structure
-
-```
-~/.config/ai/
-├── AGENTS.md             # Entry point — tells agents what to read
-├── instructions.md       # Thin pointer to AGENTS.md (auto-loaded by some tools)
-├── mcp.json              # MCP server definitions (dual-key for cross-tool compat)
-├── knowledge/            # Portable context — who you are, how you write, how you work
-│   ├── me.md             # Identity, role, expertise
-│   ├── voice.md          # Writing style and tone
-│   ├── preferences.md    # Workflow and tool preferences
-│   ├── people/           # Team and collaborator context
-│   │   └── team.md       # Immediate team and key relationships
-│   ├── projects/         # Active project notes
-│   └── reference/        # Technical conventions and patterns
-├── agents/               # Custom agent definitions
-├── skills/               # Reusable multi-step procedures
-├── prompts/              # One-liner prompt templates
-│   └── bootstrap.md      # Paste-in for tools without instruction file support
-├── setup.ps1             # Creates symlinks (run once, as Administrator)
-└── README.md             # This file
-```
-
 ## Quick start
 
 ```powershell
@@ -58,44 +35,53 @@ The tool will walk you through filling out each knowledge file
 step by step — who you are, how you write, how you work, your team,
 and your MCP servers. Takes about five minutes.
 
-## How mcp.json works
+## How it works
 
-The file has two root keys with identical server definitions:
+```
+                              ┌─────────────────────┐
+                              │   ~/.config/ai/     │
+                              │                     │
+                              │  mcp.json           │
+                              │  instructions.md    │
+                              │  AGENTS.md          │
+                              │  knowledge/         │
+                              │    me.md            │
+                              │    voice.md         │
+                              │    preferences.md   │
+                              │    people/team.md   │
+                              │  skills/            │
+                              │  prompts/           │
+                              │  agents/            │
+                              └────────┬────────────┘
+                                       │
+                          symlinks fan out to each tool
+                                       │
+              ┌────────────────────────┼────────────────────────┐
+              │                        │                        │
+     ┌────────▼─────────┐    ┌────────▼─────────┐    ┌────────▼─────────┐
+     │    VS Code        │    │  Claude Desktop   │    │     Cursor       │
+     │                   │    │                   │    │                  │
+     │  mcp.json ←───────│────│── mcp.json ←──────│────│── (manual)       │
+     │  copilot-         │    │  claude_desktop_  │    │  .cursorrules ←──│
+     │  instructions.md ←│    │  config.json ←    │    │                  │
+     └───────────────────┘    └───────────────────┘    └──────────────────┘
+```
+
+`mcp.json` has two root keys with identical server definitions:
 - `"servers"` — read by VS Code Copilot
 - `"mcpServers"` — read by Claude Desktop, Cursor, and other MCP clients
 
 Each tool reads the key it understands and ignores the other.
-Edit once, every tool picks it up.
 
-## Symlinks
+Symlinks redirect each tool's hardcoded config path to the canonical files:
 
-Each tool expects its config at a hardcoded path.
-Symlinks redirect them all to the same canonical files:
-
-```
-~/.config/ai/
-│
-├── mcp.json ─────────────┬──── %APPDATA%\Code\User\mcp.json          (VS Code)
-│   ├─ "servers": {...}   │
-│   └─ "mcpServers": {...}└──── %APPDATA%\Claude\claude_desktop_config.json  (Claude Desktop)
-│
-├── instructions.md ──────┬──── .github/copilot-instructions.md        (VS Code Copilot)
-│   └─ "Read AGENTS.md"  ├──── CLAUDE.md                              (Claude)
-│                         └──── .cursorrules                           (Cursor)
-│
-├── AGENTS.md
-│   └─ points to knowledge/*
-│
-└── knowledge/
-    ├── me.md
-    ├── voice.md
-    ├── preferences.md
-    └── people/team.md
-```
-
-Edit `mcp.json` once → VS Code and Claude Desktop both see it.
-Edit `instructions.md` once → Copilot, Claude, and Cursor all load it.
-The knowledge files are always in the same place for every tool.
+| Tool | Expected path | Symlinked to |
+|------|---------------|--------------|
+| VS Code | `%APPDATA%\Code\User\mcp.json` | `~/.config/ai/mcp.json` |
+| Claude Desktop | `%APPDATA%\Claude\claude_desktop_config.json` | `~/.config/ai/mcp.json` |
+| VS Code Copilot | `.github/copilot-instructions.md` | `~/.config/ai/instructions.md` |
+| Claude | `CLAUDE.md` | `~/.config/ai/instructions.md` |
+| Cursor | `.cursorrules` | `~/.config/ai/instructions.md` |
 
 ## Enforcement
 
