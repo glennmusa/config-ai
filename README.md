@@ -105,7 +105,7 @@ See `prompts/bootstrap.md` for the full version.
 | **Skill** | A multi-step procedure an agent can follow | `skills/onboarding.md` |
 | **Agent** | A skill with enough context to run autonomously | `agents/onboarding.md` |
 
-A prompt is a sentence. A skill is a prompt that grew up.
+A prompt is a sentence. A skill is a prompt that grew up. An agent is a skill that can think for itself.
 
 ### The maturity model (suggested)
 
