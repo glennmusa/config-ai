@@ -18,11 +18,17 @@ each tool expects its config. Edit once, every tool picks it up.
 ## Quick start
 
 ```powershell
+# Windows (requires Administrator)
 git clone https://github.com/glennmusa/config-ai ~/.config/ai
 cd ~/.config/ai
-
-# Create the symlinks (requires Administrator)
 .\setup.ps1
+```
+
+```bash
+# Linux / macOS
+git clone https://github.com/glennmusa/config-ai ~/.config/ai
+cd ~/.config/ai
+chmod +x setup.sh && ./setup.sh
 ```
 
 Then paste this into any AI tool with file access:
