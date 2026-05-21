@@ -96,7 +96,24 @@ See `prompts/bootstrap.md` for the full version.
 
 ## Concepts
 
-### Knowledge vs. skills vs. prompts
+This is what works for us — not a hard and fast rule. Use what's useful, ignore what isn't.
+
+### The maturity model (suggested)
+
+Most AI workflows follow a natural progression:
+
+```
+knowledge → prompt → skill → agent
+```
+
+1. **Knowledge** — facts about you that don't change often
+2. **Prompt** — a one-liner you paste when you need something done
+3. **Skill** — a reusable procedure with steps, inputs, and expected outputs
+4. **Agent** — a skill with enough context to run autonomously
+
+Not everything needs to be an agent. Most useful things are skills.
+
+A prompt is a sentence. A skill is a prompt that grew up. An agent is a skill that can think for itself.
 
 | Type | What it is | Example |
 |------|-----------|---------|
@@ -104,19 +121,3 @@ See `prompts/bootstrap.md` for the full version.
 | **Prompt** | A one-liner that kicks off a workflow | `prompts/bootstrap.md` |
 | **Skill** | A multi-step procedure an agent can follow | `skills/onboarding.md` |
 | **Agent** | A skill with enough context to run autonomously | `agents/onboarding.md` |
-
-A prompt is a sentence. A skill is a prompt that grew up. An agent is a skill that can think for itself.
-
-### The maturity model (suggested)
-
-Most AI workflows follow a natural progression:
-
-```
-prompt → skill → agent
-```
-
-1. **Prompt** — a one-liner you paste when you need something done
-2. **Skill** — a reusable procedure with steps, inputs, and expected outputs
-3. **Agent** — a skill with enough context to run autonomously
-
-Not everything needs to be an agent. Most useful things are skills.
