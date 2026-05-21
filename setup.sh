@@ -23,10 +23,9 @@ link() {
 link "$HOME/.config/Code/User/mcp.json"                  "$CONFIG_DIR/mcp.json"   # VS Code
 # link "$HOME/.config/Claude/claude_desktop_config.json"  "$CONFIG_DIR/mcp.json"   # Claude Desktop (uncomment if used)
 
-# --- Instruction files ---
-link "$CONFIG_DIR/.github/copilot-instructions.md"        "$CONFIG_DIR/instructions.md"   # VS Code Copilot
-link "$CONFIG_DIR/CLAUDE.md"                              "$CONFIG_DIR/instructions.md"   # Claude
-link "$CONFIG_DIR/.cursorrules"                           "$CONFIG_DIR/instructions.md"   # Cursor
+# --- Instruction files (global) ---
+link "$HOME/.claude/CLAUDE.md"                            "$CONFIG_DIR/instructions.md"   # Claude Code (global)
+# link "$HOME/.cursor/rules/config-ai.md"                 "$CONFIG_DIR/instructions.md"   # Cursor (global, uncomment if used)
 
 echo ""
 echo "Done. Symlinks created."

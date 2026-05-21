@@ -21,11 +21,10 @@ foreach ($target in $mcpTargets) {
     }
 }
 
-# --- Instruction files ---
+# --- Instruction files (global) ---
 $instructionTargets = @(
-    "$configDir\.github\copilot-instructions.md"   # VS Code Copilot
-    "$configDir\CLAUDE.md"                          # Claude
-    "$configDir\.cursorrules"                       # Cursor
+    "$HOME\.claude\CLAUDE.md"                      # Claude Code (global)
+    # "$HOME\.cursor\rules\config-ai.md"           # Cursor (global, uncomment if used)
 )
 
 foreach ($target in $instructionTargets) {

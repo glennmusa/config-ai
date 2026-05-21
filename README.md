@@ -65,11 +65,10 @@ and your MCP servers. Takes about five minutes.
               ┌────────────────────────┼────────────────────────┐
               │                        │                        │
      ┌────────▼──────────┐    ┌────────▼──────────┐    ┌────────▼─────────┐
-     │    VS Code        │    │  Claude Desktop   │    │     Cursor       │
+     │    VS Code        │    │  Claude           │    │     Cursor       │
      │                   │    │                   │    │                  │
      │  mcp.json ←───────│────│── mcp.json ←──────│────│── (manual)       │
-     │  copilot-         │    │  claude_desktop_  │    │  .cursorrules ←──│
-     │  instructions.md ←│    │  config.json ←────│    │                  │
+     │                   │    │  CLAUDE.md ←──────│    │  rules/ ←────────│
      └───────────────────┘    └───────────────────┘    └──────────────────┘
 ```
 
@@ -85,9 +84,11 @@ Symlinks redirect each tool's hardcoded config path to the canonical files:
 |------|---------------|--------------|
 | VS Code | `%APPDATA%\Code\User\mcp.json` | `~/.config/ai/mcp.json` |
 | Claude Desktop | `%APPDATA%\Claude\claude_desktop_config.json` | `~/.config/ai/mcp.json` |
-| VS Code Copilot | `.github/copilot-instructions.md` | `~/.config/ai/instructions.md` |
-| Claude | `CLAUDE.md` | `~/.config/ai/instructions.md` |
-| Cursor | `.cursorrules` | `~/.config/ai/instructions.md` |
+| Claude Code | `~/.claude/CLAUDE.md` | `~/.config/ai/instructions.md` |
+| Cursor | `~/.cursor/rules/config-ai.md` | `~/.config/ai/instructions.md` |
+
+Per-repo instruction files (`.github/copilot-instructions.md`, `CLAUDE.md`, `.cursorrules`)
+are left to you — symlink them at the repo root if you want per-project enforcement.
 
 ## Enforcement
 
