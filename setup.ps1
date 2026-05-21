@@ -4,39 +4,28 @@
 
 $configDir = "$HOME\.config\ai"
 
-# --- MCP server config ---
-$mcpTargets = @(
-    "$env:APPDATA\Code\User\mcp.json"                           # VS Code
-    # "$env:APPDATA\Claude\claude_desktop_config.json"           # Claude Desktop (uncomment if used)
-)
-
-foreach ($target in $mcpTargets) {
-    $parent = Split-Path $target
-    if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
-    if (Test-Path $target) {
-        Write-Host "  SKIP  $target (already exists — back up and remove to symlink)" -ForegroundColor Yellow
+function Link-Config {
+    param([string]$Target, [string]$Source, [string]$Tool)
+    $parent = Split-Path $Target
+    if (-not (Test-Path $parent)) {
+        Write-Host "  SKIP  $Tool not found ($parent does not exist)" -ForegroundColor DarkGray
+        return
+    }
+    if (Test-Path $Target) {
+        Write-Host "  SKIP  $Target (already exists — back up and remove to symlink)" -ForegroundColor Yellow
     } else {
-        New-Item -ItemType SymbolicLink -Path $target -Target "$configDir\mcp.json" | Out-Null
-        Write-Host "  LINK  $target -> mcp.json" -ForegroundColor Green
+        New-Item -ItemType SymbolicLink -Path $Target -Target $Source | Out-Null
+        Write-Host "  LINK  $Target -> $Source" -ForegroundColor Green
     }
 }
+
+# --- MCP server config ---
+Link-Config "$env:APPDATA\Code\User\mcp.json"                   "$configDir\mcp.json"          "VS Code"
+# Link-Config "$env:APPDATA\Claude\claude_desktop_config.json"   "$configDir\mcp.json"          "Claude Desktop"
 
 # --- Instruction files (global) ---
-$instructionTargets = @(
-    "$HOME\.claude\CLAUDE.md"                      # Claude Code (global)
-    # "$HOME\.cursor\rules\config-ai.md"           # Cursor (global, uncomment if used)
-)
-
-foreach ($target in $instructionTargets) {
-    $parent = Split-Path $target
-    if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
-    if (Test-Path $target) {
-        Write-Host "  SKIP  $target (already exists)" -ForegroundColor Yellow
-    } else {
-        New-Item -ItemType SymbolicLink -Path $target -Target "$configDir\instructions.md" | Out-Null
-        Write-Host "  LINK  $target -> instructions.md" -ForegroundColor Green
-    }
-}
+Link-Config "$HOME\.claude\CLAUDE.md"                            "$configDir\instructions.md"   "Claude Code"
+# Link-Config "$HOME\.cursor\rules\config-ai.md"                 "$configDir\instructions.md"   "Cursor"
 
 Write-Host ""
 Write-Host "Done. Symlinks created." -ForegroundColor Cyan
