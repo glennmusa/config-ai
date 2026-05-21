@@ -30,8 +30,8 @@ Link-Config "$HOME\.cursor\rules\config-ai.md"                   "$configDir\ins
 Write-Host ""
 Write-Host "Done. Symlinks created." -ForegroundColor Cyan
 Write-Host ""
-Write-Host "For tools that don't support instruction files, paste this:" -ForegroundColor White
+Write-Host "Now prompt your AI tool to onboard you with something like:" -ForegroundColor White
 Write-Host ""
-Write-Host '  You have access to my knowledge base at ~/.config/ai/. Start by reading AGENTS.md, then the files it references. Use this context for all responses.' -ForegroundColor DarkGray
+Write-Host '  Set up my ~/.config/ai/ knowledge base. Follow the skill in skills/onboarding.md.' -ForegroundColor DarkGray
 Write-Host ""
-Write-Host "See prompts/bootstrap.md for more." -ForegroundColor White
+Write-Host "See prompts/onboarding.md for more." -ForegroundColor White

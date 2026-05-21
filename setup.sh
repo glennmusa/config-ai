@@ -33,8 +33,8 @@ link "$HOME/.cursor/rules/config-ai.md"                   "$CONFIG_DIR/instructi
 echo ""
 echo "Done. Symlinks created."
 echo ""
-echo "For tools that don't support instruction files, paste this:"
+echo "Now prompt your AI tool to onboard you with something like:"
 echo ""
-echo '  You have access to my knowledge base at ~/.config/ai/. Start by reading AGENTS.md, then the files it references. Use this context for all responses.'
+echo '  Set up my ~/.config/ai/ knowledge base. Follow the skill in skills/onboarding.md.'
 echo ""
-echo "See prompts/bootstrap.md for more."
+echo "See prompts/onboarding.md for more."
