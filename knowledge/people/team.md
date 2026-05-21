@@ -4,16 +4,16 @@ My immediate team and key working relationships.
 
 ## Core Team
 
-**Alex Manager** — Engineering Manager, Platform Team.
+**Grace Hopper** — Engineering Manager, Platform Team.
 Direct manager. Weekly 1:1s.
 
-**Jordan Lee** — Tech Lead, core collaborator.
+**Fred Rogers** — Tech Lead, core collaborator.
 
-**Sam Chen** — Senior engineer, core collaborator.
+**Bob Ross** — Senior engineer, core collaborator.
 
 ## Key Collaborators
 
-**Taylor Kim** — Partner team (Security).
+**Ada Lovelace** — Partner team (Security).
 Bi-weekly sync on shared components.
 
 ## Meeting Cadence
