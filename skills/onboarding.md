@@ -54,11 +54,27 @@ Update `knowledge/people/team.md`. Show draft. Wait for approval.
 
 ### Step 5: MCP servers
 
-Ask me:
-- What MCP servers do you use? (e.g. GitHub, filesystem, database, custom)
-- For each: what command starts it? Any environment variables?
+Scan the host for existing MCP configurations. Check these paths (skip any that don't exist):
 
-Update `mcp.json` with the servers in both the `"servers"` and `"mcpServers"` keys.
+| Tool            | Windows                                          | Linux / macOS                          |
+|-----------------|--------------------------------------------------|----------------------------------------|
+| VS Code         | `%APPDATA%\Code\User\mcp.json`                  | `~/.config/Code/User/mcp.json`         |
+| Claude Desktop  | `%APPDATA%\Claude\claude_desktop_config.json`    | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Claude Code     | `~/.claude/settings.json`                        | `~/.claude/settings.json`              |
+| Cursor          | `~/.cursor/mcp.json`                             | `~/.cursor/mcp.json`                   |
+
+For each file found, extract the MCP server entries. Deduplicate by server name
+(same name + same command = one entry). Present a combined list:
+
+> I found these MCP servers already configured on your machine:
+> - **server-name** — `command args` (from VS Code)
+> - ...
+
+Ask me:
+- Should I import all of these into `mcp.json`?
+- Any servers to skip or add?
+
+Update `mcp.json` with the final set in both the `"servers"` and `"mcpServers"` keys.
 Show draft. Wait for approval.
 
 ### Step 6: Symlinks
