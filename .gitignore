@@ -7,7 +7,5 @@ Thumbs.db
 *.swp
 *.swo
 
-# Symlink targets (created by setup.ps1, not tracked)
+# Symlink targets (created by setup script, not tracked)
 .github/copilot-instructions.md
-CLAUDE.md
-.cursorrules

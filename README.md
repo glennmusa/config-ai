@@ -18,11 +18,17 @@ each tool expects its config. Edit once, every tool picks it up.
 ## Quick start
 
 ```powershell
+# Windows (requires Administrator)
 git clone https://github.com/glennmusa/config-ai ~/.config/ai
 cd ~/.config/ai
-
-# Create the symlinks (requires Administrator)
 .\setup.ps1
+```
+
+```bash
+# Linux / macOS
+git clone https://github.com/glennmusa/config-ai ~/.config/ai
+cd ~/.config/ai
+chmod +x setup.sh && ./setup.sh
 ```
 
 Then paste this into any AI tool with file access:
@@ -59,11 +65,10 @@ and your MCP servers. Takes about five minutes.
               ┌────────────────────────┼────────────────────────┐
               │                        │                        │
      ┌────────▼──────────┐    ┌────────▼──────────┐    ┌────────▼─────────┐
-     │    VS Code        │    │  Claude Desktop   │    │     Cursor       │
+     │    VS Code        │    │  Claude           │    │     Cursor       │
      │                   │    │                   │    │                  │
      │  mcp.json ←───────│────│── mcp.json ←──────│────│── (manual)       │
-     │  copilot-         │    │  claude_desktop_  │    │  .cursorrules ←──│
-     │  instructions.md ←│    │  config.json ←────│    │                  │
+     │                   │    │  CLAUDE.md ←──────│    │  rules/ ←────────│
      └───────────────────┘    └───────────────────┘    └──────────────────┘
 ```
 
@@ -79,9 +84,11 @@ Symlinks redirect each tool's hardcoded config path to the canonical files:
 |------|---------------|--------------|
 | VS Code | `%APPDATA%\Code\User\mcp.json` | `~/.config/ai/mcp.json` |
 | Claude Desktop | `%APPDATA%\Claude\claude_desktop_config.json` | `~/.config/ai/mcp.json` |
-| VS Code Copilot | `.github/copilot-instructions.md` | `~/.config/ai/instructions.md` |
-| Claude | `CLAUDE.md` | `~/.config/ai/instructions.md` |
-| Cursor | `.cursorrules` | `~/.config/ai/instructions.md` |
+| Claude Code | `~/.claude/CLAUDE.md` | `~/.config/ai/instructions.md` |
+| Cursor | `~/.cursor/rules/config-ai.md` | `~/.config/ai/instructions.md` |
+
+Per-repo instruction files (`.github/copilot-instructions.md`, `CLAUDE.md`, `.cursorrules`)
+are left to you — symlink them at the repo root if you want per-project enforcement.
 
 ## Enforcement
 
