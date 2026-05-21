@@ -7,7 +7,7 @@ One directory, portable across tools.
 
 Every AI tool wants its own config in its own location.
 You end up teaching each one who you are from scratch,
-configuring the same MCP servers three times, and maintaining
+configuring the same MCP servers in every tool, and maintaining
 parallel instruction files that inevitably drift.
 
 ## The fix
