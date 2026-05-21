@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>~/.config/ai — One directory for every AI tool</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-hover: #79c0ff;
+      --green: #3fb950;
+      --purple: #bc8cff;
+      --orange: #d29922;
+      --code-bg: #0d1117;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hover); text-decoration: underline; }
+    code {
+      font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: 3em;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--accent); font-size: 0.45em; font-weight: 400; letter-spacing: 0.02em; }
+    .hero p {
+      font-size: 1.25em;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+
+    /* CTA */
+    .cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      color: var(--bg);
+      text-decoration: none;
+    }
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    /* Install block */
+    .install {
+      max-width: 680px;
+      margin: 0 auto 60px;
+      padding: 0 24px;
+    }
+    .install-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+    }
+    .install-tab {
+      background: var(--bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      padding: 8px 20px;
+      cursor: pointer;
+      font-size: 0.85em;
+      font-weight: 500;
+      border-radius: 8px 8px 0 0;
+      margin-right: -1px;
+    }
+    .install-tab.active {
+      background: var(--surface);
+      color: var(--text);
+      border-bottom: 1px solid var(--surface);
+    }
+    .install-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0 12px 12px 12px;
+      overflow: hidden;
+    }
+    .install-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85em;
+      color: var(--text-muted);
+    }
+    .install-header button {
+      background: var(--border);
+      color: var(--text);
+      border: none;
+      padding: 4px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85em;
+    }
+    .install-header button:hover { background: var(--text-muted); }
+    .install-body {
+      padding: 20px;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.9em;
+      line-height: 1.8;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .install-body .comment { color: var(--text-muted); }
+    .install-body .cmd { color: var(--green); }
+    .install-body .path { color: var(--orange); }
+    .install-panel { display: none; }
+    .install-panel.active { display: block; }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Sections */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+    section h2 {
+      font-size: 1.8em;
+      margin-bottom: 8px;
+    }
+    section h2 + p {
+      color: var(--text-muted);
+      font-size: 1.1em;
+      margin-bottom: 32px;
+    }
+
+    /* Problem / Solution */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 640px) {
+      .problem-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2em; }
+    }
+    .problem-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .problem-card h3 {
+      font-size: 1em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .problem-card p {
+      color: var(--text-muted);
+      font-size: 0.95em;
+    }
+    .problem-card.before { border-color: #f8514966; }
+    .problem-card.before h3 .icon { color: #f85149; }
+    .problem-card.after { border-color: #3fb95066; }
+    .problem-card.after h3 .icon { color: var(--green); }
+
+    /* Architecture diagram */
+    .arch {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.85em;
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .arch .highlight { color: var(--accent); }
+    .arch .label { color: var(--text); }
+
+    /* Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .features { grid-template-columns: 1fr; }
+    }
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .feature .icon {
+      font-size: 1.5em;
+      margin-bottom: 12px;
+    }
+    .feature h3 {
+      font-size: 1em;
+      margin-bottom: 6px;
+    }
+    .feature p {
+      color: var(--text-muted);
+      font-size: 0.9em;
+    }
+
+    /* Maturity */
+    .maturity {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .maturity-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 28px;
+      text-align: center;
+      min-width: 160px;
+    }
+    .maturity-step .label {
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+    .maturity-step .desc {
+      color: var(--text-muted);
+      font-size: 0.85em;
+      margin-top: 4px;
+    }
+    .maturity-arrow {
+      font-size: 1.5em;
+      color: var(--text-muted);
+    }
+    .maturity-caption {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95em;
+    }
+
+    /* Tool compat */
+    .tool-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .tool-table th, .tool-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table th {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.85em;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .tool-table td { font-size: 0.95em; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-table .auto { color: var(--green); }
+    .tool-table .paste { color: var(--orange); }
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-muted);
+      font-size: 0.85em;
+      border-top: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1><code>~/.config/ai</code><br><span>One directory for every AI tool.</span></h1>
+    <p>Clone once. Run setup. Every AI tool you use reads the same MCP servers, the same knowledge base, the same voice.</p>
+    <div class="cta-group">
+      <a href="https://github.com/glennmusa/config-ai" class="btn btn-primary">View on GitHub</a>
+      <a href="#quickstart" class="btn btn-secondary">Quick start ↓</a>
+    </div>
+  </div>
+
+  <!-- Install -->
+  <div class="install" id="quickstart">
+    <div class="install-tabs">
+      <div class="install-tab active" onclick="switchTab('windows')">Windows</div>
+      <div class="install-tab" onclick="switchTab('linux')">Linux / macOS</div>
+    </div>
+    <div id="panel-windows" class="install-panel active">
+      <div class="install-block">
+        <div class="install-header">
+          <button onclick="copyInstall('windows')">Copy</button>
+        </div>
+        <div class="install-body">
+<span class="comment"># Clone to the canonical location</span>
+<span class="cmd">git clone</span> https://github.com/glennmusa/config-ai <span class="path">$env:USERPROFILE\.config\ai</span>
+
+<span class="comment"># Run the setup script (Administrator)</span>
+<span class="cmd">cd</span> <span class="path">$env:USERPROFILE\.config\ai</span>
+<span class="cmd">.\setup.ps1</span>
+
+<span class="comment"># Open any AI tool and paste:</span>
+Set up my ~/.config/ai/ knowledge base. Follow the skill in skills/onboarding.md.
+        </div>
+      </div>
+    </div>
+    <div id="panel-linux" class="install-panel">
+      <div class="install-block" style="border-radius: 0 12px 12px 12px;">
+        <div class="install-header">
+          <button onclick="copyInstall('linux')">Copy</button>
+        </div>
+        <div class="install-body">
+<span class="comment"># Clone to the canonical location</span>
+<span class="cmd">git clone</span> https://github.com/glennmusa/config-ai <span class="path">~/.config/ai</span>
+
+<span class="comment"># Run the setup script</span>
+<span class="cmd">cd</span> <span class="path">~/.config/ai</span>
+<span class="cmd">chmod +x setup.sh && ./setup.sh</span>
+
+<span class="comment"># Open any AI tool and paste:</span>
+Set up my ~/.config/ai/ knowledge base. Follow the skill in skills/onboarding.md.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Problem / Solution -->
+  <section>
+    <h2>The problem</h2>
+    <p>Every AI tool has its own config file, its own memory, its own version of you.</p>
+    <div class="problem-grid">
+      <div class="problem-card before">
+        <h3><span class="icon">✗</span> Without config-ai</h3>
+        <p>MCP servers defined in every tool. Writing style re-explained every session. New tool = start from scratch. Preferences drift.</p>
+      </div>
+      <div class="problem-card after">
+        <h3><span class="icon">✓</span> With config-ai</h3>
+        <p>One <code>mcp.json</code>, symlinked everywhere. One knowledge base every tool reads. New tool = run setup. Preferences stay canonical.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Architecture -->
+  <section>
+    <h2>How it works</h2>
+    <p>Symlinks at the OS level. No plugins, no sync services, no runtime dependencies.</p>
+    <div class="arch"><span class="label">                    ~/.config/ai/</span>
+                    ├── <span class="highlight">mcp.json</span>            ← the one file
+                    ├── <span class="highlight">instructions.md</span>     ← thin pointer to AGENTS.md
+                    ├── knowledge/
+                    │   ├── me.md
+                    │   ├── voice.md
+                    │   └── preferences.md
+                    ├── agents/
+                    ├── skills/
+                    └── prompts/
+                          │
+       ┌──────────────────┼──────────────────┐
+       │                  │                   │
+       ▼                  ▼                   ▼
+  <span class="label">  VS Code</span>          <span class="label">Claude Code</span>          <span class="label">  Cursor</span>
+       │                  │                   │
+  symlink reads      symlink reads       symlink reads
+  <span class="highlight">"servers"</span> key      <span class="highlight">CLAUDE.md</span>           <span class="highlight">rules/</span>
+       │                  │                   │
+       └──────────────────┴───────────────────┘
+         edit once → every tool picks it up</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Features -->
+  <section>
+    <h2>What's inside</h2>
+    <p>Everything an AI tool needs to know about you, in one place.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">🔌</div>
+        <h3>Unified MCP servers</h3>
+        <p>Dual-key <code>mcp.json</code> works with both <code>"servers"</code> and <code>"mcpServers"</code> conventions. Add a server once.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🧠</div>
+        <h3>Portable knowledge base</h3>
+        <p>Your identity, writing voice, preferences, and team — in versioned markdown. Every tool reads the same source of truth.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔗</div>
+        <h3>OS-level symlinks</h3>
+        <p>No plugins or sync. The OS handles redirection. Tools don't know they're sharing — and don't need to.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🎓</div>
+        <h3>Guided onboarding</h3>
+        <p>An AI skill walks you through filling in your knowledge files step by step. Setup takes about five minutes.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📐</div>
+        <h3>Maturity model</h3>
+        <p>Prompt → Skill → Agent. Start simple, promote when complexity is earned. No premature abstraction.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔄</div>
+        <h3>Git-native updates</h3>
+        <p><code>git pull</code> to get new agents, prompts, and MCP servers. Your knowledge files stay untouched.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Tool compatibility -->
+  <section>
+    <h2>Tool compatibility</h2>
+    <p>Automatic for tools with instruction file support. One-liner paste for everything else.</p>
+    <div class="table-wrap">
+      <table class="tool-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>MCP config</th>
+            <th>Knowledge base</th>
+            <th>How</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>VS Code Copilot</td>
+            <td class="auto">✓ Symlinked</td>
+            <td class="paste">Paste bootstrap</td>
+            <td><code>prompts/bootstrap.md</code></td>
+          </tr>
+          <tr>
+            <td>Claude Code</td>
+            <td>—</td>
+            <td class="auto">✓ Symlinked</td>
+            <td><code>~/.claude/CLAUDE.md</code></td>
+          </tr>
+          <tr>
+            <td>Claude Desktop</td>
+            <td class="auto">✓ Symlinked</td>
+            <td class="paste">Paste bootstrap</td>
+            <td><code>prompts/bootstrap.md</code></td>
+          </tr>
+          <tr>
+            <td>Cursor</td>
+            <td>—</td>
+            <td class="auto">✓ Symlinked</td>
+            <td><code>~/.cursor/rules/</code></td>
+          </tr>
+          <tr>
+            <td>Any other tool</td>
+            <td>—</td>
+            <td class="paste">Paste bootstrap</td>
+            <td><code>prompts/bootstrap.md</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Maturity model -->
+  <section>
+    <h2>A suggested maturity model</h2>
+    <p>One way to think about how AI artifacts evolve. Not a rule — a pattern we've found useful.</p>
+    <div class="maturity">
+      <div class="maturity-step">
+        <div class="label">Prompt</div>
+        <div class="desc">Stateless instruction.<br>No tools needed.</div>
+      </div>
+      <span class="maturity-arrow">→</span>
+      <div class="maturity-step">
+        <div class="label" style="color: var(--purple)">Skill</div>
+        <div class="desc">Needs steps, context,<br>tool access.</div>
+      </div>
+      <span class="maturity-arrow">→</span>
+      <div class="maturity-step">
+        <div class="label" style="color: var(--orange)">Agent</div>
+        <div class="desc">Needs judgment<br>and autonomy.</div>
+      </div>
+    </div>
+    <p class="maturity-caption">Start everything as a prompt. Promote when it earns the complexity.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Get started -->
+  <section style="text-align: center;">
+    <h2>Get started in 5 minutes</h2>
+    <p style="margin-bottom: 32px;">Three commands. One conversation with your AI tool. Done.</p>
+    <div class="cta-group">
+      <a href="https://github.com/glennmusa/config-ai" class="btn btn-primary">Clone the repo</a>
+      <a href="https://github.com/glennmusa/config-ai/blob/main/README.md" class="btn btn-secondary">Read the docs</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>config-ai · <a href="https://github.com/glennmusa/config-ai">glennmusa/config-ai</a></p>
+  </footer>
+
+  <script>
+    function switchTab(os) {
+      document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.install-panel').forEach(p => p.classList.remove('active'));
+      if (os === 'windows') {
+        document.querySelector('.install-tab:nth-child(1)').classList.add('active');
+        document.getElementById('panel-windows').classList.add('active');
+      } else {
+        document.querySelector('.install-tab:nth-child(2)').classList.add('active');
+        document.getElementById('panel-linux').classList.add('active');
+      }
+    }
+    function copyInstall(os) {
+      const cmds = os === 'windows'
+        ? 'git clone https://github.com/glennmusa/config-ai $env:USERPROFILE\\.config\\ai\ncd $env:USERPROFILE\\.config\\ai\n.\\setup.ps1'
+        : 'git clone https://github.com/glennmusa/config-ai ~/.config/ai\ncd ~/.config/ai\nchmod +x setup.sh && ./setup.sh';
+      navigator.clipboard.writeText(cmds);
+      const btn = event.target;
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1500);
+    }
+  </script>
+
+</body>
+</html>
