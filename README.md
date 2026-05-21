@@ -70,15 +70,32 @@ Edit once, every tool picks it up.
 ## Symlinks
 
 Each tool expects its config at a hardcoded path.
-Symlinks redirect them to this canonical directory:
+Symlinks redirect them all to the same canonical files:
 
-| Tool | Expected path | Symlinked to |
-|------|---------------|--------------|
-| VS Code | `%APPDATA%\Code\User\mcp.json` | `~/.config/ai/mcp.json` |
-| Claude Desktop | `%APPDATA%\Claude\claude_desktop_config.json` | `~/.config/ai/mcp.json` |
-| VS Code Copilot | `.github/copilot-instructions.md` | `~/.config/ai/instructions.md` |
-| Claude projects | `CLAUDE.md` | `~/.config/ai/instructions.md` |
-| Cursor | `.cursorrules` | `~/.config/ai/instructions.md` |
+```
+~/.config/ai/
+│
+├── mcp.json ─────────────┬──── %APPDATA%\Code\User\mcp.json          (VS Code)
+│   ├─ "servers": {...}   │
+│   └─ "mcpServers": {...}└──── %APPDATA%\Claude\claude_desktop_config.json  (Claude Desktop)
+│
+├── instructions.md ──────┬──── .github/copilot-instructions.md        (VS Code Copilot)
+│   └─ "Read AGENTS.md"  ├──── CLAUDE.md                              (Claude)
+│                         └──── .cursorrules                           (Cursor)
+│
+├── AGENTS.md
+│   └─ points to knowledge/*
+│
+└── knowledge/
+    ├── me.md
+    ├── voice.md
+    ├── preferences.md
+    └── people/team.md
+```
+
+Edit `mcp.json` once → VS Code and Claude Desktop both see it.
+Edit `instructions.md` once → Copilot, Claude, and Cursor all load it.
+The knowledge files are always in the same place for every tool.
 
 ## Enforcement
 
