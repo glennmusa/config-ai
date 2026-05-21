@@ -65,27 +65,30 @@ and your MCP servers. Takes about five minutes.
               ┌────────────────────────┼────────────────────────┐
               │                        │                        │
      ┌────────▼──────────┐    ┌────────▼──────────┐    ┌────────▼─────────┐
-     │    VS Code        │    │  Claude           │    │     Cursor       │
+     │    VS Code        │    │  Claude Code      │    │     Cursor       │
      │                   │    │                   │    │                  │
-     │  mcp.json ←───────│────│── mcp.json ←──────│────│── (manual)       │
-     │                   │    │  CLAUDE.md ←──────│    │  rules/ ←────────│
+     │  ← mcp.json       │    │  ← instructions.md│    │  ← instructions.md│
+     │    (MCP servers)  │    │    (as CLAUDE.md) │    │    (as rules/)   │
      └───────────────────┘    └───────────────────┘    └──────────────────┘
 ```
 
 `mcp.json` has two root keys with identical server definitions:
 - `"servers"` — read by VS Code Copilot
-- `"mcpServers"` — read by Claude Desktop, Cursor, and other MCP clients
+- `"mcpServers"` — read by Claude Code, Cursor, and other MCP clients
 
 Each tool reads the key it understands and ignores the other.
 
 Symlinks redirect each tool's hardcoded config path to the canonical files:
 
-| Tool | Expected path | Symlinked to |
-|------|---------------|--------------|
-| VS Code | `%APPDATA%\Code\User\mcp.json` | `~/.config/ai/mcp.json` |
-| Claude Desktop | `%APPDATA%\Claude\claude_desktop_config.json` | `~/.config/ai/mcp.json` |
-| Claude Code | `~/.claude/CLAUDE.md` | `~/.config/ai/instructions.md` |
-| Cursor | `~/.cursor/rules/config-ai.md` | `~/.config/ai/instructions.md` |
+| Type | Tool | Expected path | Symlinked to |
+|------|------|---------------|--------------|
+| MCP servers | VS Code | `%APPDATA%\Code\User\mcp.json` | `~/.config/ai/mcp.json` |
+| Instructions | Claude Code | `~/.claude/CLAUDE.md` | `~/.config/ai/instructions.md` |
+| Instructions | Cursor | `~/.cursor/rules/config-ai.md` | `~/.config/ai/instructions.md` |
+
+Claude Code and Cursor read MCP servers from their own config files
+(`~/.claude/settings.json` and `~/.cursor/mcp.json` respectively).
+Use each tool's CLI or settings UI to add servers there, or copy entries from `mcp.json`.
 
 Per-repo instruction files (`.github/copilot-instructions.md`, `CLAUDE.md`, `.cursorrules`)
 are left to you — symlink them at the repo root if you want per-project enforcement.
